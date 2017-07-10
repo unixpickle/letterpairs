@@ -28,7 +28,7 @@
 
       this._keyListener = (e) => {
         if (e.which === ESCAPE_KEY) {
-          window.letterpairs.navigateTo(route.slice(0, 2));
+          window.letterpairs.navigateTo('/');
         }
       };
       window.addEventListener('keypress', this._keyListener);
