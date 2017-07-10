@@ -15,11 +15,12 @@
   }
 
   function navigateTo(route) {
-    if (route.length === 1) {
-
-    }
     history.pushState({}, routeTitle(route), route);
     showRoute(route);
+  }
+
+  function refresh() {
+    navigateTo(location.pathname);
   }
 
   function routeTitle(route) {
@@ -36,5 +37,6 @@
   });
 
   window.letterpairs.navigateTo = navigateTo;
+  window.letterpairs.refresh = refresh;
 
 })();

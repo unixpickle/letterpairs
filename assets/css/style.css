@@ -1,3 +1,10 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
 body {
   background-color: #333;
   color: white;
@@ -64,6 +71,7 @@ td.selected {
 
 .list-container {
   position: relative;
+  min-height: 100%;
 }
 
 .letter-heading {
@@ -74,4 +82,37 @@ td.selected {
 .option {
   margin: 20px 0;
   font-size: 30px;
+}
+
+.add-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 60px;
+  height: 60px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  cursor: pointer;
+
+  box-sizing: border-box;
+  border: 3px solid white;
+  border-radius: 30px;
+}
+
+.add-button:focus {
+  outline: 0;
+}
+
+.add-button::after {
+  content: '+';
+  font-size: 40px;
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  line-height: 60px;
+  color: white;
 }
