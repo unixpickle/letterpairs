@@ -82,12 +82,38 @@ td.selected {
 .option {
   margin: 20px 0;
   font-size: 30px;
+  position: relative;
+}
+
+button:focus {
+  outline: 0;
+}
+
+.delete-button {
+  position: absolute;
+  top: 0;
+  margin-left: 5px;
+  width: 20px;
+  height: 100%;
+  visibility: hidden;
+  background-color: red;
+  float: right;
+  border: 0;
+  background-color: transparent;
+  background-image: url('../svg/delete.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.option:hover > .delete-button {
+  visibility: visible;
 }
 
 .add-button {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  right: 20px;
+  bottom: 20px;
   width: 60px;
   height: 60px;
   border: 0;
@@ -99,10 +125,6 @@ td.selected {
   box-sizing: border-box;
   border: 3px solid white;
   border-radius: 30px;
-}
-
-.add-button:focus {
-  outline: 0;
 }
 
 .add-button::after {
