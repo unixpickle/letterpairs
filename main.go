@@ -6,29 +6,60 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"regexp"
 	"sync"
 )
 
-var SaveLock sync.Mutex
-var DataFile string
+type Server struct {
+	AssetDir   http.Dir
+	FileServer http.Handler
+	DataFile   string
+
+	saveLock sync.RWMutex
+}
 
 func main() {
 	var listenAddr string
+	var server Server
 	var assetDir string
-
-	flag.StringVar(&DataFile, "data", "data.json", "place to store changes")
-	flag.StringVar(&listenAddr, "addr", ":8082", "listen address")
+	flag.StringVar(&server.DataFile, "data", "data.json", "place to store changes")
 	flag.StringVar(&assetDir, "assets", "assets", "web asset directory")
+	flag.StringVar(&listenAddr, "addr", ":8082", "listen address")
 
 	flag.Parse()
 
-	http.Handle("/", http.FileServer(http.Dir(assetDir)))
-	http.HandleFunc("/update", HandleUpdate)
-	http.HandleFunc("/params", HandleParams)
+	server.AssetDir = http.Dir(assetDir)
+	server.FileServer = http.FileServer(server.AssetDir)
+
+	http.HandleFunc("/", server.HandleRoot)
+	http.HandleFunc("/update", server.HandleUpdate)
+	http.HandleFunc("/params", server.HandleParams)
 	http.ListenAndServe(listenAddr, nil)
 }
 
-func HandleUpdate(w http.ResponseWriter, r *http.Request) {
+func (s *Server) HandleRoot(w http.ResponseWriter, r *http.Request) {
+	expr := regexp.MustCompile("^/[a-z][a-z]?$")
+	if expr.MatchString(r.URL.Path) {
+		f, err := s.AssetDir.Open("/index.html")
+		if err == nil {
+			defer f.Close()
+			stats, err := f.Stat()
+			if err == nil {
+				http.ServeContent(w, r, "index.html", stats.ModTime(), f)
+			} else {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	} else {
+		s.FileServer.ServeHTTP(w, r)
+	}
+}
+
+func (s *Server) HandleUpdate(w http.ResponseWriter, r *http.Request) {
+	s.saveLock.Lock()
+	defer s.saveLock.Unlock()
 	data, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		return
@@ -38,12 +69,14 @@ func HandleUpdate(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`{"error": "bad JSON data"}`))
 		return
 	}
-	ds.Write(DataFile)
+	ds.Write(s.DataFile)
 	w.Write([]byte(`{"success": true}`))
 }
 
-func HandleParams(w http.ResponseWriter, r *http.Request) {
-	ds, err := ReadDataSet(DataFile)
+func (s *Server) HandleParams(w http.ResponseWriter, r *http.Request) {
+	s.saveLock.RLock()
+	defer s.saveLock.RUnlock()
+	ds, err := ReadDataSet(s.DataFile)
 	if err != nil {
 		log.Println("read data set:", err)
 		ds = DefaultDataSet
