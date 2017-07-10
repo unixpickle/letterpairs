@@ -1,5 +1,7 @@
 (function() {
 
+  const ESCAPE_KEY = 8;
+
   class List {
     constructor(route) {
       const pair = route.slice(1);
@@ -23,11 +25,18 @@
       this._container.appendChild(this._list);
 
       document.body.appendChild(this._container);
+
+      this._keyListener = (e) => {
+        if (e.which === ESCAPE_KEY) {
+          window.letterpairs.navigateTo(route.slice(0, 2));
+        }
+      };
+      window.addEventListener('keypress', this._keyListener);
     }
 
     destroy() {
-      // TODO: this.
       this._container.remove();
+      window.removeEventListener('keypress', this._keyListener);
     }
   }
 

@@ -1,10 +1,20 @@
 (function() {
 
+  const ESCAPE_KEY = 8;
+
   class LetterPicker {
     constructor(path) {
       this._curLetter = path.slice(1);
+      this._keyListeners = [];
       this._setupGrid();
-      this._mouseListeners = [];
+
+      if (path.length === 2) {
+        this._addKeyListener((e) => {
+          if (e.which === ESCAPE_KEY) {
+            window.letterpairs.navigateTo('/');
+          }
+        });
+      }
     }
 
     destroy() {
@@ -12,7 +22,7 @@
       if (this._backArrow) {
         this._backArrow.remove();
       }
-      this._mouseListeners.forEach((x) => {
+      this._keyListeners.forEach((x) => {
         window.removeEventListener('keypress', x);
       });
     }
@@ -25,13 +35,19 @@
         for (let col = 0; col < 4; ++col) {
           const letter = window.letterpairs.letters[col + row*4];
           const colElem = document.createElement('td');
-          
+
           colElem.textContent = letter.toUpperCase();
           if (letter === this._curLetter) {
             colElem.className = 'selected';
           }
           colElem.addEventListener('click', () => {
             this._pickedLetter(letter);
+          });
+
+          this._addKeyListener((e) => {
+            if (e.which === letter.charCodeAt(0)) {
+              this._pickedLetter(letter);
+            }
           });
 
           rowElem.appendChild(colElem);
@@ -46,6 +62,11 @@
 
     _pickedLetter(letter) {
       window.letterpairs.navigateTo('/'+this._curLetter+letter);
+    }
+
+    _addKeyListener(listener) {
+      this._keyListeners.push(listener);
+      window.addEventListener('keypress', listener);
     }
   }
 
