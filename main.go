@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"strings"
 	"sync"
 )
 
@@ -38,23 +39,29 @@ func main() {
 }
 
 func (s *Server) HandleRoot(w http.ResponseWriter, r *http.Request) {
-	expr := regexp.MustCompile("^/[a-z][a-z]?$")
-	if expr.MatchString(r.URL.Path) {
-		f, err := s.AssetDir.Open("/index.html")
-		if err == nil {
-			defer f.Close()
-			stats, err := f.Stat()
-			if err == nil {
-				http.ServeContent(w, r, "index.html", stats.ModTime(), f)
-			} else {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-			}
-		} else {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-	} else {
+	expr := regexp.MustCompile("^/[a-z]?[a-z]?$")
+	if !expr.MatchString(r.URL.Path) {
 		s.FileServer.ServeHTTP(w, r)
+		return
 	}
+	data, err := s.dataJSON()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	f, err := s.AssetDir.Open("/index.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer f.Close()
+	contents, err := ioutil.ReadAll(f)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	filledInBody := strings.Replace(string(contents), "DATA_HERE", string(data), 1)
+	w.Write([]byte(filledInBody))
 }
 
 func (s *Server) HandleUpdate(w http.ResponseWriter, r *http.Request) {
@@ -74,6 +81,15 @@ func (s *Server) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) HandleParams(w http.ResponseWriter, r *http.Request) {
+	if data, err := s.dataJSON(); err != nil {
+		http.Error(w, "failed to read JSON", http.StatusInternalServerError)
+		return
+	} else {
+		w.Write(data)
+	}
+}
+
+func (s *Server) dataJSON() ([]byte, error) {
 	s.saveLock.RLock()
 	defer s.saveLock.RUnlock()
 	ds, err := ReadDataSet(s.DataFile)
@@ -81,6 +97,5 @@ func (s *Server) HandleParams(w http.ResponseWriter, r *http.Request) {
 		log.Println("read data set:", err)
 		ds = DefaultDataSet
 	}
-	data, _ := json.Marshal(ds)
-	w.Write(data)
+	return json.Marshal(ds)
 }
