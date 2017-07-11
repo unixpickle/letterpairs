@@ -21,12 +21,12 @@
           window.letterpairs.navigateTo('/');
         }
       };
-      window.addEventListener('keypress', this._keyListener);
+      window.addEventListener('keydown', this._keyListener);
     }
 
     destroy() {
       this._container.remove();
-      window.removeEventListener('keypress', this._keyListener);
+      window.removeEventListener('keydown', this._keyListener);
     }
 
     _createHeading() {

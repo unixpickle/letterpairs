@@ -46,7 +46,7 @@
           });
 
           this._addKeyListener((e) => {
-            if (e.which === letter.charCodeAt(0)) {
+            if (e.key === letter) {
               this._pickedLetter(letter);
             }
           });
@@ -67,7 +67,7 @@
 
     _addKeyListener(listener) {
       this._keyListeners.push(listener);
-      window.addEventListener('keypress', listener);
+      window.addEventListener('keydown', listener);
     }
   }
 
