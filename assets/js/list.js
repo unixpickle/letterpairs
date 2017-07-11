@@ -1,6 +1,7 @@
 (function() {
 
-  const ESCAPE_KEY = 8;
+  const BACKSPACE_KEY = 8;
+  const ESCAPE_KEY = 27;
 
   class List {
     constructor(route) {
@@ -16,7 +17,7 @@
       document.body.appendChild(this._container);
 
       this._keyListener = (e) => {
-        if (e.which === ESCAPE_KEY) {
+        if (e.which === ESCAPE_KEY || e.which === BACKSPACE_KEY) {
           window.letterpairs.navigateTo('/');
         }
       };
@@ -66,7 +67,7 @@
     }
 
     _addOption() {
-      const addition = prompt('Enter puzzle name');
+      const addition = prompt('Enter term for ' + this._pair.toUpperCase());
       if (!addition) {
         return;
       }

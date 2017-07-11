@@ -1,6 +1,7 @@
 (function() {
 
-  const ESCAPE_KEY = 8;
+  const BACKSPACE_KEY = 8;
+  const ESCAPE_KEY = 27;
 
   class LetterPicker {
     constructor(path) {
@@ -10,7 +11,7 @@
 
       if (path.length === 2) {
         this._addKeyListener((e) => {
-          if (e.which === ESCAPE_KEY) {
+          if (e.which === ESCAPE_KEY || e.which === BACKSPACE_KEY) {
             window.letterpairs.navigateTo('/');
           }
         });
