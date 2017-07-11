@@ -24,7 +24,7 @@
         this._backArrow.remove();
       }
       this._keyListeners.forEach((x) => {
-        window.removeEventListener('keypress', x);
+        window.removeEventListener('keydown', x);
       });
     }
 
