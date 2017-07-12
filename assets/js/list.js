@@ -73,15 +73,18 @@
       }
 
       let data = window.letterpairs.data;
-      const dupPair = Object.keys(data).find((key) => {
-        return data[key].find((x) => x.toLowerCase() == addition.toLowerCase());
-      });
+      const dupPair = pairForTerm(data, addition);
       if (dupPair) {
         alert('That term is already used in ' + dupPair);
         return;
       }
 
       this._applyMutator((data) => {
+        if (pairForTerm(data, addition)) {
+          // Happens if the entry was already added by
+          // another client asynchronously.
+          return data;
+        }
         var list = data[this._pair.toUpperCase()];
         list.splice(0, 0, addition);
         return data;
@@ -104,6 +107,12 @@
           alert('Error updating: ' + e);
         });
     }
+  }
+
+  function pairForTerm(data, term) {
+    return Object.keys(data).find((key) => {
+      return data[key].find((x) => x.toLowerCase() == term.toLowerCase());
+    });
   }
 
   window.letterpairs.List = List;
