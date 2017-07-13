@@ -22,8 +22,10 @@
       document.body.appendChild(this._backArrow);
 
       this._keyListener = (e) => {
-        if (e.which === ESCAPE_KEY || e.which === BACKSPACE_KEY) {
+        if (e.which === ESCAPE_KEY) {
           window.letterpairs.navigateTo('/');
+        } else if (e.which === BACKSPACE_KEY) {
+          window.letterpairs.navigateTo(route.slice(0, 2));
         }
       };
       window.addEventListener('keydown', this._keyListener);
