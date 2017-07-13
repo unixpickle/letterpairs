@@ -38,6 +38,7 @@ td.selected {
   font-size: 100px;
   margin: 0 10px;
   text-decoration: none;
+  font-weight: bolder;
 }
 
 .option {
