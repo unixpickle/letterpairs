@@ -6,7 +6,7 @@ html, body {
 }
 
 body {
-  background-color: #333;
+  background-color: #2e2e2e;
   color: white;
   text-align: center;
   font-family: sans-serif;
@@ -104,7 +104,7 @@ button:focus {
     height: 480px;
     left: calc(50% - 240px);
     top: calc(50% - 240px);
-    background-color: rgba(200, 200, 200, 0.8);
+    background-color: rgba(46, 46, 46, 0.6);
     border: 2px solid white;
   }
 
@@ -120,6 +120,10 @@ button:focus {
 }
 
 @media (max-width: 500px) {
+  #pentagon-background {
+    opacity: 0.6;
+  }
+
   table {
     width: 300px;
     height: 450px;
