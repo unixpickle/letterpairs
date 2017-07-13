@@ -17,11 +17,12 @@
   }
 
   function letterHeading(letter) {
-    const span = document.createElement('span');
-    span.className = 'letter-heading';
-    span.style.color = letterColor(letter);
-    span.textContent = letter.toUpperCase();
-    return span;
+    const heading = document.createElement('a');
+    heading.className = 'letter-heading';
+    heading.style.color = letterColor(letter);
+    heading.textContent = letter.toUpperCase();
+    heading.href = '/' + letter;
+    return heading;
   }
 
   window.letterpairs.letters = 'abcdefghijklmnopqrstuvwx';

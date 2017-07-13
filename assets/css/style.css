@@ -37,6 +37,7 @@ td.selected {
 .letter-heading {
   font-size: 100px;
   margin: 0 10px;
+  text-decoration: none;
 }
 
 .option {
