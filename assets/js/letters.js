@@ -21,7 +21,7 @@
     heading.className = 'letter-heading';
     heading.style.color = letterColor(letter);
     heading.textContent = letter.toUpperCase();
-    heading.href = '/' + letter;
+    heading.href = 'javascript:letterpairs.navigateTo("/' + letter + '")';
     return heading;
   }
 
