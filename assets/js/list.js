@@ -10,11 +10,16 @@
       this._container = document.createElement('div');
       this._container.className = 'list-container';
 
+      this._backArrow = document.createElement('button');
+      this._backArrow.className = 'back-button';
+      this._backArrow.addEventListener('click', () => letterpairs.navigateTo('/'));
+
       this._createHeading();
       this._createList();
       this._createAddButton();
 
       document.body.appendChild(this._container);
+      document.body.appendChild(this._backArrow);
 
       this._keyListener = (e) => {
         if (e.which === ESCAPE_KEY || e.which === BACKSPACE_KEY) {
@@ -26,6 +31,7 @@
 
     destroy() {
       this._container.remove();
+      this._backArrow.remove();
       window.removeEventListener('keydown', this._keyListener);
     }
 

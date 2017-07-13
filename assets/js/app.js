@@ -1,6 +1,7 @@
 (function() {
 
   let currentView = null;
+  let backArrow = null;
 
   function showRoute(route) {
     document.title = routeTitle(route);

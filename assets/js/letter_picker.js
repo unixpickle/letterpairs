@@ -9,6 +9,13 @@
       this._keyListeners = [];
       this._setupGrid();
 
+      if (this._curLetter) {
+        this._backArrow = document.createElement('button');
+        this._backArrow.className = 'back-button picker-back-button';
+        this._backArrow.addEventListener('click', () => letterpairs.navigateTo('/'));
+        document.body.appendChild(this._backArrow);
+      }
+
       if (path.length === 2) {
         this._addKeyListener((e) => {
           if (e.which === ESCAPE_KEY || e.which === BACKSPACE_KEY) {
