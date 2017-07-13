@@ -29,52 +29,6 @@ td.selected {
   font-weight: bolder;
 }
 
-@media (min-width: 500px) {
-  table {
-    width: 480px;
-    height: 480px;
-    left: calc(50% - 240px);
-    top: calc(50% - 240px);
-    background-color: rgba(200, 200, 200, 0.8);
-    border: 2px solid white;
-  }
-
-  td {
-    width: 120px;
-    height: 80px;
-    font-size: 50px;
-  }
-
-  td.selected {
-    font-size: 70px;
-  }
-}
-
-@media (max-width: 500px) {
-  table {
-    width: 300px;
-    height: 450px;
-    left: calc(50% - 150px);
-    top: calc(50% - 225px);
-  }
-
-  td {
-    width: 75px;
-    height: 75px;
-    font-size: 40px;
-  }
-
-  td.selected {
-    font-size: 50px;
-  }
-
-  .picker-back-button {
-    top: auto !important;
-    bottom: 10px !important;
-    left: calc(50% - 30px) !important;
-  }
-}
-
 .list-container {
   position: relative;
   min-height: 100%;
@@ -142,4 +96,64 @@ button:focus {
   background-color: transparent;
   background-image: url('../svg/tarrow.svg');
   cursor: pointer;
+}
+
+@media (min-width: 500px) {
+  table {
+    width: 480px;
+    height: 480px;
+    left: calc(50% - 240px);
+    top: calc(50% - 240px);
+    background-color: rgba(200, 200, 200, 0.8);
+    border: 2px solid white;
+  }
+
+  td {
+    width: 120px;
+    height: 80px;
+    font-size: 50px;
+  }
+
+  td.selected {
+    font-size: 70px;
+  }
+}
+
+@media (max-width: 500px) {
+  table {
+    width: 300px;
+    height: 450px;
+    left: calc(50% - 150px);
+    top: calc(50% - 225px);
+  }
+
+  td {
+    width: 75px;
+    height: 75px;
+    font-size: 40px;
+  }
+
+  td.selected {
+    font-size: 50px;
+  }
+
+  .picker-back-button {
+    top: auto !important;
+    bottom: 10px !important;
+    left: calc(50% - 30px) !important;
+  }
+
+  .option {
+    width: 100%;
+  }
+
+  .option > label {
+    width: calc(100% - 50px);
+    display: inline-block;
+  }
+
+  .delete-button {
+    right: 5px;
+    visibility: visible;
+  }
 }
