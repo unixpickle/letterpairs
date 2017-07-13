@@ -2,6 +2,7 @@
 
   const BACKSPACE_KEY = 8;
   const ESCAPE_KEY = 27;
+  const PLUS_KEY = 187;
 
   class List {
     constructor(route) {
@@ -26,6 +27,8 @@
           window.letterpairs.navigateTo('/');
         } else if (e.which === BACKSPACE_KEY) {
           window.letterpairs.navigateTo(route.slice(0, 2));
+        } else if (e.which === PLUS_KEY) {
+          this._addOption();
         }
       };
       window.addEventListener('keydown', this._keyListener);

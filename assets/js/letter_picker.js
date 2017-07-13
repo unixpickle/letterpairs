@@ -53,7 +53,8 @@
           });
 
           this._addKeyListener((e) => {
-            if (e.key === letter) {
+            if ((e.key === letter || e.key === 'z' && letter === 'x') &&
+                !e.metaKey && !e.ctrlKey && !e.altKey) {
               this._pickedLetter(letter);
             }
           });
