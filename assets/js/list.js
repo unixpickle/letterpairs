@@ -80,19 +80,20 @@
         return;
       }
 
-      let data = window.letterpairs.data;
-      const dupPair = pairForTerm(data, addition);
-      if (dupPair) {
-        alert('That term is already used in ' + dupPair);
-        return;
-      }
-
       this._applyMutator((data) => {
-        if (pairForTerm(data, addition)) {
-          // Happens if the entry was already added by
-          // another client asynchronously.
-          return data;
+        const dupPair = pairForTerm(data, addition);
+        if (dupPair) {
+          const confirmation = confirm('That term is already used in ' +
+            dupPair + '. Would you like to replace it?');
+          if (!confirmation) {
+            return data;
+          }
         }
+        Object.keys(data).forEach((key) => {
+          data[key] = data[key].filter((x) => {
+            return x.toLowerCase() !== addition.toLowerCase();
+          });
+        });
         var list = data[this._pair.toUpperCase()];
         list.splice(0, 0, addition);
         return data;
